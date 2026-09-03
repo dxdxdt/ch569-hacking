@@ -208,6 +208,7 @@ Options are:
 
   1. using a "USB power blocker"
   2. cutting and insulating the 5V and GND wires in a USB A to A cable
+  3. Soldering or physically plucking the USB-A fuse(F2) off the board
 
 Up to you.
 
