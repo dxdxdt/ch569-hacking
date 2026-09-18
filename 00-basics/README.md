@@ -176,10 +176,7 @@ just not a good design. The designers probably had to trade off the
 I'd recommend not using the `RST#` at all. Build your set up so that you
 can power cycle the board with ease.
 
-<img alt="silly mistake" src="image-8.webp" width="400">
-
-(This is a silly mistake: the pin is actually connected to the pin
-through R21/R22, not just to 3.3VBUS)
+<img alt="ISP" src="image-8.webp" width="400">
 
 ## Putting It All Together
 
