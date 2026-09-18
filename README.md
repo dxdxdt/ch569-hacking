@@ -40,6 +40,10 @@ them. Here's the list of docs in case you got lost.
   1. [Basics](00-basics/README.md)
   2. [Your First Blinker Program](01-blink-program/README.md)
 
+### Other Info
+
+  - [Supplementary Datasheet](ds-supplement/README.md)
+
 ## MORE
 
 [Basics](00-basics/README.md) →
