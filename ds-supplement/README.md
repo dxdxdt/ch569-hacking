@@ -129,6 +129,62 @@ the evaluation board is wired up.
 
 See `DEBUG_EN`, `CODE_READ_EN` and `RB_ROM_EXT_RE` in the datasheet.
 
+## Characteristics of the RISC-V Processor
+
+RISC-V cores can be configured in hundreds of ways, but the datasheet doesn't
+say much about the RISC-V core. This is an attempt to demystify how the
+processor is implemented.
+
+### Unaligned Memory Access and Basic Arithmetics
+
+Sampling Programs:
+
+  - [catch-trap.c](eval-progs/catch-trap.c)
+  - [benchmark-mstrict-align.c](eval-progs/benchmark-mstrict-align.c)
+
+As you'd expect, the chip processor is not capable of unaligned memory access
+and if the memory being accessed is not aligned to the word size boundary(4
+bytes), the processor traps.
+
+It's important to note that, if GCC statically detects at compile time that the
+code would result in unaligned memory access, it automatically generates code to
+avoid this with byte loads and shift operators. There's no warning with the
+usual warning options(`-Wall` and `-Wextra`) and the specific warning option
+`-Wcast-align` can be used to detect this. Be aware that the code generated in
+this way performs poorly and bloats the size of the binary. The programmer
+should take extra care to make sure the compiler doesn't generate subpar code
+trying to avoid unaligned memory access. Currently, there's no option to control
+this behaviour. This seems to be a bug in both GCC and the RISC-V specs itself.
+
+The following benchmark shows performance penalty from GCC's strict memory
+alignment fallback.
+
+  - 80 MHz System clock
+  - 512 iterations (2KB stack memory accessed in 4-byte words)
+  - numbers in cycles
+
+```
+Aligned access:   cnt                  512
+Aligned access:   add                 5134
+Aligned access:   sub                 5131
+Aligned access:   mul                 5131
+Aligned access:   div                 5131
+Aligned access:   mod                 5131
+Unaligned access: cnt                  512
+Unaligned access: add                20490
+Unaligned access: sub                21003
+Unaligned access: mul                21514
+Unaligned access: div                21514
+Unaligned access: mod                21002
+```
+
+According to the datasheet, the processor features a branch predictor. That
+could explain the extra few cycles in the initial loop.
+
+The number of cycles consumed grows by a factor of 4. As you'd expect with
+microcontrollers, all the basic integer arithmetic operations(`+`, `-`, `*`,
+`/`, `%`) appear to take the same number of cycles to complete.
+
 ## Errors: datasheet
 ### EMMC peripheral data line 4
 
