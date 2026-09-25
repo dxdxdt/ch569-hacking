@@ -16,6 +16,26 @@ this document, version will be specified where appropriate.
 
 Your contributions are welcome.
 
+## NOT UHS-1 Compliant
+
+**If you require an MCU that's capable of a full transfer rate of UHS-1
+SDR50 or HS200, CH56x is not the one you're looking for.**
+
+The chip is not conforming to UHS-1 and HS200 because it has no ability
+to switch I/O voltage from 3.3V to 1.8V as required by the eMMC specs.
+Although `MSDCK` *can* be configured to 96MHz, without switching to down
+to 1.8V, most of sdcards would just lock up.
+
+The sdcards will operate just fine with the half of the clock
+speed(48MHz), with which will give you about **24MB/s**. If you're
+looking for an MCU with a proper EMMC interface, consider using
+`CH32H4xx` which has the right clock frequency(more or less) and voltage
+switching capability.
+
+Remarks: it seems that WCH is not the only one who made this kind of
+mistake. Advertising the chip as SDR50-capable whilst the chip cannot
+switch from 3.3V to 1.8V logic level is more common than you'd think.
+
 ## Human-friendlier Pin Function Table
 
 The pin definitions in the datasheet is not formatted in a way that's
