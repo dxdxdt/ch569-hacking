@@ -212,10 +212,10 @@ complete.
 
 Link: https://www.reddit.com/r/RISCV/comments/126262j/notes_on_wch_fast_interrupts/
 
-The PFIC implementation is similar to(but not identical to) "shadow
-registers" or "bank switching" seen in Intel 8051. Unlike the
+The PFIC implementation is similar to, but not identical to, "shadow
+registers" or "bank switching" as seen in Intel 8051. Unlike the
 traditional implementation where the set of registers is set aside or
-bank-switched, the WCH's FPIC relies on the hardware's ability to make a
+bank-switched, WCH's FPIC relies on the hardware's ability to make a
 stack frame to save general purpose registers before entering an
 ISR(interrupt service routine) in just a few cycles. This is done much
 faster than the standard RISC-V ISR where the general purpose registers
@@ -350,11 +350,16 @@ probably takes 2 cycles to complete.
 
 #### The *Naked* Function Hack
 
-Also included in the sample program is the "naked function hack" for
-eliminating unnecessary `sw` instructions in ISRs with the mainline GCC.
-This can be enabled by defining `USE_WCH_FPIC_HACK` as an integer value
-of 1. The following is the first instructions generated with the hack
-and the benchmark data.
+Unfortunately, WCH's PFIC ISR is not yet mainlined and there seems to be
+no discussion on when and if it will ever be merged. Different vendors
+have different ideas on how to make fast ISR implementations and the
+RISC-V standard specs have not caught up as of yet.
+
+In the meantime, for those who might need it, included in the sample
+program is the "naked function hack" for eliminating unnecessary `sw`
+instructions in ISRs with the mainline GCC. This can be enabled by
+defining `USE_WCH_FPIC_HACK` as an integer value of 1. The following is
+the first instructions generated with the hack and the benchmark data.
 
 ```
 000003d4 <TMR0_IRQHandler>:
